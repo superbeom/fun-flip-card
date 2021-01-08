@@ -28,7 +28,7 @@
       }
     },
     "android": {
-      "package": "com.heungdo.flipcard",
+      "package": "com.heungdo.funflipcard",
       "versionCode": 1,
       "permissions": [],
       "config": {
