@@ -25,17 +25,11 @@ export default () => {
 
       if (storageStage && storageHorizontalNum) {
         /* Store Game Info to Game Screen */
-        // setGameInfo((curState) => ({
-        //   stage: storageStage,
-        //   horizontalNum: storageHorizontalNum,
-        //   heart: storageHeart,
-        //   gameEnd: storageGameEnd,
-        // }));
         setGameInfo((curState) => ({
-          stage: 840,
-          horizontalNum: 6,
-          heart: 40,
-          gameEnd: false,
+          stage: storageStage,
+          horizontalNum: storageHorizontalNum,
+          heart: storageHeart,
+          gameEnd: storageGameEnd,
         }));
       } else {
         setGameInfo((curState) => ({
