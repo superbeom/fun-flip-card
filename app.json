@@ -1,0 +1,45 @@
+{
+  "expo": {
+    "name": "FunFlipCard",
+    "slug": "flip-card",
+    "version": "1.0.4",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "bundleIdentifier": "com.heungdo.flipcard",
+      "buildNumber": "1.0.4",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSAllowsArbitraryLoads": true,
+        "NSAllowsArbitraryLoadsForMedia": true,
+        "NSAllowsArbitraryLoadsInWebContent": true,
+        "config": {
+          "googleMobileAdsAppId": "ca-app-pub-8452350078553076~8582636797"
+        }
+      }
+    },
+    "android": {
+      "package": "com.heungdo.flipcard",
+      "versionCode": 6,
+      "permissions": [],
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-8452350078553076~5172824109"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "androidNavigationBar": {
+      "visible": "sticky-immersive"
+    }
+  }
+}
