@@ -1,18 +1,11 @@
 import React, { useState, createContext, useContext, useRef } from "react";
-import { useMutation } from "react-apollo-hooks";
 import AsyncStorage from "@react-native-community/async-storage";
-
-import { useUsername } from "./AuthContext";
-import { UPDATE_GAME_INFO } from "./ContextQueries";
 
 export const GameContext = createContext([{}, () => {}]);
 
 export const GameProvider = ({ gameInfo: gameInfoProp, children }) => {
   const [gameInfo, setGameInfo] = useState(gameInfoProp);
-  const username = useUsername();
   const tempHeart = useRef(0);
-
-  const [updateGameInfoMutation] = useMutation(UPDATE_GAME_INFO);
 
   /* stage +1 업데이트 */
   const nextStage = async () => {
@@ -22,14 +15,6 @@ export const GameProvider = ({ gameInfo: gameInfoProp, children }) => {
         ...curState,
         stage: curState.stage + 1,
       }));
-
-      /* Store Stage Info to Backend */
-      await updateGameInfoMutation({
-        variables: {
-          username,
-          stage: gameInfo.stage + 1,
-        },
-      });
 
       /* Store Stage Info to Local */
       await AsyncStorage.setItem("stage", JSON.stringify(gameInfo.stage + 1));
@@ -46,14 +31,6 @@ export const GameProvider = ({ gameInfo: gameInfoProp, children }) => {
         ...curState,
         horizontalNum: curState.horizontalNum + 1,
       }));
-
-      /* Store HorizontalNum Info to Backend */
-      await updateGameInfoMutation({
-        variables: {
-          username,
-          horizontalNum: gameInfo.horizontalNum + 1,
-        },
-      });
 
       /* Store HorizontalNum Info to Local */
       await AsyncStorage.setItem(
@@ -74,14 +51,6 @@ export const GameProvider = ({ gameInfo: gameInfoProp, children }) => {
         heart: curState.heart - 1,
       }));
 
-      /* Store Heart Info to Backend */
-      await updateGameInfoMutation({
-        variables: {
-          username,
-          heart: gameInfo.heart - 1,
-        },
-      });
-
       /* Store Heart Info to Local */
       await AsyncStorage.setItem("heart", JSON.stringify(gameInfo.heart - 1));
     } catch (error) {
@@ -99,14 +68,6 @@ export const GameProvider = ({ gameInfo: gameInfoProp, children }) => {
         ...curState,
         heart: curState.heart + plusNum,
       }));
-
-      /* Store Heart Info to Backend */
-      await updateGameInfoMutation({
-        variables: {
-          username,
-          heart: gameInfo.heart + tempHeart.current,
-        },
-      });
 
       /* Store Heart Info to Local */
       await AsyncStorage.setItem(
@@ -126,14 +87,6 @@ export const GameProvider = ({ gameInfo: gameInfoProp, children }) => {
         ...curState,
         gameEnd: true,
       }));
-
-      /* Store GameEnd Info to Backend */
-      await updateGameInfoMutation({
-        variables: {
-          username,
-          gameEnd: true,
-        },
-      });
 
       /* Store GameEnd Info to Local */
       await AsyncStorage.setItem("gameEnd", JSON.stringify(true));

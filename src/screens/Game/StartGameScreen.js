@@ -1,11 +1,11 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Alert } from "react-native";
 import { vw, vh } from "react-native-expo-viewport-units";
 
 import { useGameInfo } from "../../context/GameContext";
 import colors from "../../constants/colors";
 import { FLAG } from "../../utils/FontAwesomeSource";
-import { CURRENT_STAGE, RANK } from "../../constants/strings";
+import { CURRENT_STAGE, COMING_SOON, CANCEL } from "../../constants/strings";
 
 import AnimalScreen from "./AnimalScreen";
 import Card from "../../components/Card";
@@ -15,8 +15,19 @@ import Arrow from "../../components/Arrow";
 import GetHeartText from "../../components/GetHeartText";
 import Button from "../../components/Button";
 
-export default ({ onStartGame, getHeart, navigation }) => {
+export default ({ onStartGame, getHeart }) => {
   const { stage, heart, gameEnd } = useGameInfo();
+
+  const clickedRankButton = () => {
+    Alert.alert(
+      COMING_SOON,
+      "",
+      [{ text: CANCEL, onPress: () => null, style: "cancel" }],
+      { cancelable: true }
+    );
+
+    return true;
+  };
 
   return (
     <View style={styles.screen}>
@@ -57,11 +68,7 @@ export default ({ onStartGame, getHeart, navigation }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button
-          onPress={() => navigation.navigate(RANK)}
-          content={"trophy"}
-          size={vw(20)}
-        />
+        <Button onPress={clickedRankButton} content={"trophy"} size={vw(20)} />
       </View>
 
       {/* Animals */}
