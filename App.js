@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Asset } from "expo-asset";
 import { Audio } from "expo-av";
 import AsyncStorage from "@react-native-community/async-storage";
-import { InMemoryCache } from "apollo-cache-inmemory";
-import { persistCache } from "apollo-cache-persist";
 
 import { SoundProvider } from "./src/context/SoundContext";
+import { GameProvider } from "./src/context/GameContext";
 
 import AppStack from "./src/stacks/AppStack";
 
@@ -14,6 +13,7 @@ import Loader from "./src/components/Loader";
 export default () => {
   const [loaded, setLoaded] = useState(false);
   const [sound, setSound] = useState();
+  const [gameInfo, setGameInfo] = useState({});
 
   const preLoad = async () => {
     try {
@@ -52,11 +52,29 @@ export default () => {
       await sound.setIsLoopingAsync(true);
 
       /* Load Cache */
-      const cache = new InMemoryCache();
-      await persistCache({
-        cache,
-        storage: AsyncStorage,
-      });
+      const storageStage = JSON.parse(await AsyncStorage.getItem("stage"));
+      const storageHorizontalNum = JSON.parse(
+        await AsyncStorage.getItem("horizontalNum")
+      );
+      const storageHeart = JSON.parse(await AsyncStorage.getItem("heart"));
+      const storageGameEnd = JSON.parse(await AsyncStorage.getItem("gameEnd"));
+
+      if (storageStage && storageHorizontalNum) {
+        /* Store Game Info to Game Screen */
+        setGameInfo((curState) => ({
+          stage: storageStage,
+          horizontalNum: storageHorizontalNum,
+          heart: storageHeart,
+          gameEnd: storageGameEnd,
+        }));
+      } else {
+        setGameInfo((curState) => ({
+          stage: 1,
+          horizontalNum: 2,
+          heart: 5,
+          gameEnd: false,
+        }));
+      }
 
       /* Set State */
       setLoaded(true);
@@ -75,7 +93,9 @@ export default () => {
 
   return loaded ? (
     <SoundProvider sound={sound}>
-      <AppStack />
+      <GameProvider gameInfo={gameInfo}>
+        <AppStack />
+      </GameProvider>
     </SoundProvider>
   ) : (
     <Loader />
