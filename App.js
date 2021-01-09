@@ -68,11 +68,26 @@ export default () => {
           gameEnd: storageGameEnd,
         }));
       } else {
+        const newStage = 1;
+        const newHorizontalNum = 2;
+        const newHeart = 5;
+        const newGameEnd = false;
+
+        /* Store Game Info to Local */
+        await AsyncStorage.setItem("stage", JSON.stringify(newStage));
+        await AsyncStorage.setItem(
+          "horizontalNum",
+          JSON.stringify(newHorizontalNum)
+        );
+        await AsyncStorage.setItem("heart", JSON.stringify(newHeart));
+        await AsyncStorage.setItem("gameEnd", JSON.stringify(newGameEnd));
+
+        /* Store Game Info to Game Screen */
         setGameInfo((curState) => ({
-          stage: 1,
-          horizontalNum: 2,
-          heart: 5,
-          gameEnd: false,
+          stage: newStage,
+          horizontalNum: newHorizontalNum,
+          heart: newHeart,
+          gameEnd: newGameEnd,
         }));
       }
 
