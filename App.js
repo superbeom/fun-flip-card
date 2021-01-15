@@ -27,7 +27,7 @@ export default () => {
         require("./assets/images/animal_5_flamingo.png"),
         require("./assets/images/animal_6_elephant.png"),
         require("./assets/images/animal_7_sloth.png"),
-        require("./assets/images/animal_8_lion.png.png"),
+        require("./assets/images/animal_8_lion.png"),
         require("./assets/images/animal_9_racoon.png"),
         require("./assets/images/animal_10_panda.png"),
         require("./assets/images/animal_11_hippo.png"),
