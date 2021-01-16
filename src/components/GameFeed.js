@@ -12,6 +12,8 @@ import { Audio } from "expo-av";
 import { useGameInfo } from "../context/GameContext";
 import colors from "../constants/colors";
 import checkStage from "../utils/checkStage";
+import checkStageTwo from "../utils/checkStageTwo";
+import checkStageThree from "../utils/checkStageThree";
 import { shuffle } from "../utils/shuffleArray";
 import { checkAnswer, checkTime } from "../utils/checkSomething";
 import { getSkullForHint } from "../utils/FontAwesomeSource";
@@ -119,7 +121,16 @@ export default ({
 
   const preLoad = async () => {
     try {
-      const stageName = checkStage(stage);
+      let stageName;
+
+      if (stage <= 300) {
+        stageName = checkStage(stage);
+      } else if (stage > 300 && stage <= 600) {
+        stageName = checkStageTwo(stage);
+      } else if (stage > 600) {
+        stageName = checkStageThree(stage);
+      }
+
       setShuffleData(shuffle(stageName));
 
       /* Stage별 정해진 시간 동안, 처음에 정답 보여 주기 */
