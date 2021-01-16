@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import {
   StyleSheet,
   View,
@@ -8,6 +8,8 @@ import {
 } from "react-native";
 import { vw, vh } from "react-native-expo-viewport-units";
 
+import { useOpen, useToggleOpen } from "../context/BonusContext";
+
 import colors from "../constants/colors";
 import { GAME_PAD } from "../utils/FontAwesomeSource";
 
@@ -16,7 +18,8 @@ const floatingButtonSize = vw(16);
 
 export default () => {
   const animation = useRef(new Animated.Value(0)).current;
-  const [open, setOpen] = useState(false);
+  const open = useOpen();
+  const toggleOpen = useToggleOpen();
 
   const SixToSix = {
     transform: [
@@ -86,7 +89,7 @@ export default () => {
       useNativeDriver: true,
     }).start();
 
-    setOpen((curOpen) => !curOpen);
+    toggleOpen();
   };
 
   return (
