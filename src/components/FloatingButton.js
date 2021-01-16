@@ -1,9 +1,15 @@
 import React, { useState, useRef } from "react";
-import { StyleSheet, View, Animated, TouchableOpacity } from "react-native";
-import { AntDesign, Entypo } from "@expo/vector-icons";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Animated,
+  TouchableOpacity,
+} from "react-native";
 import { vw, vh } from "react-native-expo-viewport-units";
 
 import colors from "../constants/colors";
+import { GAME_PAD } from "../utils/FontAwesomeSource";
 
 const buttonSize = vw(20);
 const floatingButtonSize = vw(16);
@@ -12,7 +18,19 @@ export default () => {
   const animation = useRef(new Animated.Value(0)).current;
   const [open, setOpen] = useState(false);
 
-  const heartStyle = {
+  const SixToSix = {
+    transform: [
+      { scale: animation },
+      {
+        translateY: animation.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, -290],
+        }),
+      },
+    ],
+  };
+
+  const FiveToFive = {
     transform: [
       { scale: animation },
       {
@@ -24,7 +42,7 @@ export default () => {
     ],
   };
 
-  const thumbStyle = {
+  const FourToFour = {
     transform: [
       { scale: animation },
       {
@@ -36,7 +54,7 @@ export default () => {
     ],
   };
 
-  const pinStyle = {
+  const ThreeToThree = {
     transform: [
       { scale: animation },
       {
@@ -53,7 +71,7 @@ export default () => {
       {
         rotate: animation.interpolate({
           inputRange: [0, 1],
-          outputRange: ["0deg", "135deg"],
+          outputRange: ["0deg", "360deg"],
         }),
       },
     ],
@@ -74,24 +92,26 @@ export default () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.buttonContainer} activeOpacity={0.9}>
-        <Animated.View style={[styles.button, styles.menu, heartStyle]}>
-          <AntDesign name="hearto" size={vw(6.5)} color={colors.whiteColor} />
+        <Animated.View style={[styles.button, styles.menu, SixToSix]}>
+          <Text style={styles.text}>6 x 6</Text>
         </Animated.View>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.buttonContainer} activeOpacity={0.9}>
-        <Animated.View style={[styles.button, styles.menu, thumbStyle]}>
-          <Entypo name="thumbs-up" size={vw(6.5)} color={colors.whiteColor} />
+        <Animated.View style={[styles.button, styles.menu, FiveToFive]}>
+          <Text style={styles.text}>5 x 5</Text>
         </Animated.View>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.buttonContainer} activeOpacity={0.9}>
-        <Animated.View style={[styles.button, styles.menu, pinStyle]}>
-          <Entypo
-            name="location-pin"
-            size={vw(6.5)}
-            color={colors.whiteColor}
-          />
+        <Animated.View style={[styles.button, styles.menu, FourToFour]}>
+          <Text style={styles.text}>4 x 4</Text>
+        </Animated.View>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.buttonContainer} activeOpacity={0.9}>
+        <Animated.View style={[styles.button, styles.menu, ThreeToThree]}>
+          <Text style={styles.text}>3 x 3</Text>
         </Animated.View>
       </TouchableOpacity>
 
@@ -110,11 +130,7 @@ export default () => {
             },
           ]}
         >
-          <AntDesign
-            name="plus"
-            size={vw(8)}
-            color={open ? colors.accentColor : colors.whiteColor}
-          />
+          <GAME_PAD color={open ? colors.accentColor : colors.whiteColor} />
         </Animated.View>
       </TouchableOpacity>
     </View>
@@ -148,5 +164,10 @@ const styles = StyleSheet.create({
     height: floatingButtonSize,
     borderRadius: floatingButtonSize / 2,
     backgroundColor: colors.accentColor,
+  },
+  text: {
+    color: colors.whiteColor,
+    fontSize: vw(4),
+    fontWeight: "600",
   },
 });

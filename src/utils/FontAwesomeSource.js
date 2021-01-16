@@ -4,6 +4,7 @@ import {
   FontAwesome5,
   MaterialCommunityIcons,
   Entypo,
+  Ionicons,
 } from "@expo/vector-icons";
 import { vw, vh, vmax } from "react-native-expo-viewport-units";
 
@@ -60,56 +61,8 @@ export const EYE = (
   <MaterialCommunityIcons name="eye" size={vh(4)} color={colors.accentColor} />
 );
 
-/*
-  Rank
-*/
-
-export const CROWN_1 = (
-  <FontAwesome5 name={"crown"} size={awardSize} color={colors.goldColor} />
-);
-
-export const CROWN_2 = (
-  <FontAwesome5 name={"crown"} size={awardSize} color={colors.silverColor} />
-);
-
-export const CROWN_3 = (
-  <FontAwesome5 name={"crown"} size={awardSize} color={colors.brownColor} />
-);
-
-export const MEDAL_4 = (
-  <FontAwesome5 name={"medal"} size={awardSize} color={colors.goldColor} />
-);
-
-export const MEDAL_5 = (
-  <FontAwesome5 name={"medal"} size={awardSize} color={colors.silverColor} />
-);
-
-export const MEDAL_6 = (
-  <FontAwesome5 name={"medal"} size={awardSize} color={colors.brownColor} />
-);
-
-export const AWARD_7 = (
-  <FontAwesome5 name={"award"} size={awardSize} color={colors.goldColor} />
-);
-
-export const AWARD_8 = (
-  <FontAwesome5 name={"award"} size={awardSize} color={colors.silverColor} />
-);
-
-export const AWARD_9 = (
-  <FontAwesome5 name={"award"} size={awardSize} color={colors.brownColor} />
-);
-
-export const PRICE_RIBBON_10 = (
-  <Entypo name={"price-ribbon"} size={awardSize} color={colors.goldColor} />
-);
-
-export const PRICE_RIBBON_11 = (
-  <Entypo name={"price-ribbon"} size={awardSize} color={colors.silverColor} />
-);
-
-export const PRICE_RIBBON_12 = (
-  <Entypo name={"price-ribbon"} size={awardSize} color={colors.brownColor} />
+export const GAME_PAD = ({ color }) => (
+  <Ionicons name="logo-game-controller-b" size={vw(10)} color={color} />
 );
 
 /*

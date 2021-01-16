@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, Alert } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { vw, vh } from "react-native-expo-viewport-units";
 
 import { useGameInfo } from "../../context/GameContext";
@@ -14,7 +14,6 @@ import Heart from "../../components/Heart";
 import Arrow from "../../components/Arrow";
 import GetHeartText from "../../components/GetHeartText";
 import FloatingButton from "../../components/FloatingButton";
-import Button from "../../components/Button";
 
 export default ({ onStartGame, getHeart }) => {
   const { stage, heart, gameEnd } = useGameInfo();
@@ -58,7 +57,6 @@ export default ({ onStartGame, getHeart }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        {/* <Button onPress={() => null} content={"trophy"} size={vw(20)} /> */}
         <FloatingButton />
       </View>
 
