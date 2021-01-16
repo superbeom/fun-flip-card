@@ -82,7 +82,7 @@ export default () => {
       {stage > 535 && (
         <View style={styles.lionContainer}>
           <Image
-            source={require("../../../assets/images/animal_8_lion.png.png")}
+            source={require("../../../assets/images/animal_8_lion.png")}
             style={styles.content}
             resizeMode={"cover"}
           />

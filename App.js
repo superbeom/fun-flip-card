@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Asset } from "expo-asset";
 import { Audio } from "expo-av";
 import AsyncStorage from "@react-native-community/async-storage";
-import { InMemoryCache } from "apollo-cache-inmemory";
-import { persistCache } from "apollo-cache-persist";
 
 import { SoundProvider } from "./src/context/SoundContext";
+import { GameProvider } from "./src/context/GameContext";
 
 import AppStack from "./src/stacks/AppStack";
 
@@ -14,6 +13,7 @@ import Loader from "./src/components/Loader";
 export default () => {
   const [loaded, setLoaded] = useState(false);
   const [sound, setSound] = useState();
+  const [gameInfo, setGameInfo] = useState({});
 
   const preLoad = async () => {
     try {
@@ -27,7 +27,7 @@ export default () => {
         require("./assets/images/animal_5_flamingo.png"),
         require("./assets/images/animal_6_elephant.png"),
         require("./assets/images/animal_7_sloth.png"),
-        require("./assets/images/animal_8_lion.png.png"),
+        require("./assets/images/animal_8_lion.png"),
         require("./assets/images/animal_9_racoon.png"),
         require("./assets/images/animal_10_panda.png"),
         require("./assets/images/animal_11_hippo.png"),
@@ -52,11 +52,44 @@ export default () => {
       await sound.setIsLoopingAsync(true);
 
       /* Load Cache */
-      const cache = new InMemoryCache();
-      await persistCache({
-        cache,
-        storage: AsyncStorage,
-      });
+      const storageStage = JSON.parse(await AsyncStorage.getItem("stage"));
+      const storageHorizontalNum = JSON.parse(
+        await AsyncStorage.getItem("horizontalNum")
+      );
+      const storageHeart = JSON.parse(await AsyncStorage.getItem("heart"));
+      const storageGameEnd = JSON.parse(await AsyncStorage.getItem("gameEnd"));
+
+      if (storageStage && storageHorizontalNum) {
+        /* Store Game Info to Game Screen */
+        setGameInfo((curState) => ({
+          stage: storageStage,
+          horizontalNum: storageHorizontalNum,
+          heart: storageHeart,
+          gameEnd: storageGameEnd,
+        }));
+      } else {
+        const newStage = 1;
+        const newHorizontalNum = 2;
+        const newHeart = 5;
+        const newGameEnd = false;
+
+        /* Store Game Info to Local */
+        await AsyncStorage.setItem("stage", JSON.stringify(newStage));
+        await AsyncStorage.setItem(
+          "horizontalNum",
+          JSON.stringify(newHorizontalNum)
+        );
+        await AsyncStorage.setItem("heart", JSON.stringify(newHeart));
+        await AsyncStorage.setItem("gameEnd", JSON.stringify(newGameEnd));
+
+        /* Store Game Info to Game Screen */
+        setGameInfo((curState) => ({
+          stage: newStage,
+          horizontalNum: newHorizontalNum,
+          heart: newHeart,
+          gameEnd: newGameEnd,
+        }));
+      }
 
       /* Set State */
       setLoaded(true);
@@ -75,7 +108,9 @@ export default () => {
 
   return loaded ? (
     <SoundProvider sound={sound}>
-      <AppStack />
+      <GameProvider gameInfo={gameInfo}>
+        <AppStack />
+      </GameProvider>
     </SoundProvider>
   ) : (
     <Loader />

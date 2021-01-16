@@ -5,7 +5,7 @@ import { vw, vh } from "react-native-expo-viewport-units";
 import { useGameInfo } from "../../context/GameContext";
 import colors from "../../constants/colors";
 import { FLAG } from "../../utils/FontAwesomeSource";
-import { CURRENT_STAGE, COMING_SOON, CANCEL } from "../../constants/strings";
+import { CURRENT_STAGE } from "../../constants/strings";
 
 import AnimalScreen from "./AnimalScreen";
 import Card from "../../components/Card";
@@ -13,21 +13,11 @@ import StartButton from "../../components/StartButton";
 import Heart from "../../components/Heart";
 import Arrow from "../../components/Arrow";
 import GetHeartText from "../../components/GetHeartText";
+import FloatingButton from "../../components/FloatingButton";
 import Button from "../../components/Button";
 
 export default ({ onStartGame, getHeart }) => {
   const { stage, heart, gameEnd } = useGameInfo();
-
-  const clickedRankButton = () => {
-    Alert.alert(
-      COMING_SOON,
-      "",
-      [{ text: CANCEL, onPress: () => null, style: "cancel" }],
-      { cancelable: true }
-    );
-
-    return true;
-  };
 
   return (
     <View style={styles.screen}>
@@ -68,7 +58,8 @@ export default ({ onStartGame, getHeart }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button onPress={clickedRankButton} content={"trophy"} size={vw(20)} />
+        {/* <Button onPress={() => null} content={"trophy"} size={vw(20)} /> */}
+        <FloatingButton />
       </View>
 
       {/* Animals */}
