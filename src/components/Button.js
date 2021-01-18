@@ -4,15 +4,19 @@ import { vw } from "react-native-expo-viewport-units";
 
 import colors from "../constants/colors";
 
-import { HOME, TROPHY } from "../utils/FontAwesomeSource";
+import { HOME, GAME_PAD } from "../utils/FontAwesomeSource";
 
-const Button = ({ onPress, disabled, content, size }) => {
+const Button = ({ onPress, disabled, content, size, activeOpacity }) => {
   const checkContent = (content) => {
     let iconName = HOME;
 
     switch (content) {
-      case "trophy":
-        iconName = TROPHY;
+      case "home":
+        iconName = HOME;
+        break;
+
+      case "game_pad":
+        iconName = GAME_PAD;
         break;
 
       default:
@@ -34,7 +38,7 @@ const Button = ({ onPress, disabled, content, size }) => {
         },
       ]}
       onPress={onPress}
-      activeOpacity={0.7}
+      activeOpacity={activeOpacity || 0.7}
       disabled={disabled}
     >
       {checkContent(content)}

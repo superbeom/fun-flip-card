@@ -18,7 +18,7 @@ export const BLANK = "Blank";
 
 export const HOME = "Home";
 
-export const RANK = "Rank";
+export const BONUS = "Bonus";
 
 export const CONGRATULATIONS = "CONGRATULATIONS!!";
 

@@ -21,10 +21,6 @@ export const HOME = (
   <Entypo name={"home"} size={vw(6.5)} color={colors.whiteColor} />
 );
 
-export const TROPHY = (
-  <Entypo name={"trophy"} size={vw(6.5)} color={colors.whiteColor} />
-);
-
 export const HEART = (
   <MaterialCommunityIcons
     name="cards-heart"
@@ -61,8 +57,12 @@ export const EYE = (
   <MaterialCommunityIcons name="eye" size={vh(4)} color={colors.accentColor} />
 );
 
-export const GAME_PAD = ({ color }) => (
-  <Ionicons name="logo-game-controller-b" size={vw(10)} color={color} />
+export const GAME_PAD = (
+  <Ionicons
+    name="logo-game-controller-b"
+    size={vw(10)}
+    color={colors.whiteColor}
+  />
 );
 
 /*

@@ -5,17 +5,18 @@ import { vw, vh } from "react-native-expo-viewport-units";
 import { useGameInfo } from "../../context/GameContext";
 import colors from "../../constants/colors";
 import { FLAG } from "../../utils/FontAwesomeSource";
-import { CURRENT_STAGE } from "../../constants/strings";
+import { CURRENT_STAGE, BONUS } from "../../constants/strings";
 
 import AnimalScreen from "./AnimalScreen";
+
 import Card from "../../components/Card";
 import StartButton from "../../components/StartButton";
 import Heart from "../../components/Heart";
 import Arrow from "../../components/Arrow";
 import GetHeartText from "../../components/GetHeartText";
-import FloatingButton from "../../components/FloatingButton";
+import Button from "../../components/Button";
 
-export default ({ onStartGame, getHeart }) => {
+export default ({ onStartGame, getHeart, navigation }) => {
   const { stage, heart, gameEnd } = useGameInfo();
 
   return (
@@ -57,7 +58,12 @@ export default ({ onStartGame, getHeart }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <FloatingButton />
+        <Button
+          onPress={() => navigation.navigate(BONUS)}
+          content={"game_pad"}
+          size={vw(20)}
+          activeOpacity={0.9}
+        />
       </View>
 
       {/* Animals */}

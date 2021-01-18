@@ -31,7 +31,7 @@ import GetHeartScreen from "../Game/GetHeartScreen";
 
 import Header from "../../components/Header";
 
-export default () => {
+export default ({ navigation }) => {
   const { stage, heart } = useGameInfo();
   const minusHeart = useMinusHeart();
   const playSound = usePlaySound();
@@ -140,7 +140,11 @@ export default () => {
             <GameScreen onGoHome={goHomeHandler} onGameOver={gameOverHandler} />
           )
         ) : (
-          <StartGameScreen onStartGame={startGameHandler} getHeart={getHeart} />
+          <StartGameScreen
+            onStartGame={startGameHandler}
+            getHeart={getHeart}
+            navigation={navigation}
+          />
         )}
       </View>
 
