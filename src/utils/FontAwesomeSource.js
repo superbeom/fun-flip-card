@@ -11,8 +11,6 @@ import { vw, vh, vmax } from "react-native-expo-viewport-units";
 import FontAwesomeItem from "../components/FontAwesomeItem";
 import colors from "../constants/colors";
 
-const awardSize = vw(7);
-
 /*
   Basics
 */
@@ -55,6 +53,18 @@ export const BAN = (
 
 export const EYE = (
   <MaterialCommunityIcons name="eye" size={vh(4)} color={colors.accentColor} />
+);
+
+export const BONUS_STOP_WATCH = (
+  <Entypo name="stopwatch" size={vh(3.5)} color={colors.whiteColor} />
+);
+
+export const BONUS_BAN = (
+  <FontAwesome name="ban" size={vh(3.5)} color={colors.whiteColor} />
+);
+
+export const BONUS_EYE = (
+  <MaterialCommunityIcons name="eye" size={vh(4)} color={colors.whiteColor} />
 );
 
 export const GAME_PAD = (

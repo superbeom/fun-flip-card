@@ -2,42 +2,56 @@ import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
-  Text,
   StatusBar,
   BackHandler,
   Platform,
   ImageBackground,
-  TouchableOpacity,
 } from "react-native";
 import { AdMobBanner } from "expo-ads-admob";
-import { vw, vh } from "react-native-expo-viewport-units";
 
 import admob from "../../config/admob";
 
-import { useGameInfo } from "../../context/GameContext";
+import { useGameInfo, useMinusHeart } from "../../context/GameContext";
 
-import colors from "../../constants/colors";
 import { HOME } from "../../constants/strings";
 
-import Header from "../../components/Header";
-import Card from "../../components/Card";
-import Heart from "../../components/Heart";
-import Button from "../../components/Button";
+import StartGameScreen from "./StartGameScreen";
+import GameScreen from "./GameScreen";
+import GameOverScreen from "./GameOverScreen";
+import GetHeartScreen from "../Game/GetHeartScreen";
 
-const Content = ({ onPress, bonusStage }) => (
-  <TouchableOpacity
-    style={styles.cardContainer}
-    onPress={onPress}
-    activeOpacity={0.5}
-  >
-    <Card style={styles.card}>
-      <Text style={styles.bonusText}>{bonusStage}</Text>
-    </Card>
-  </TouchableOpacity>
-);
+import Header from "../../components/Header";
 
 export default ({ navigation }) => {
   const { heart } = useGameInfo();
+  const minusHeart = useMinusHeart();
+  const [startGame, setStartGame] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
+  const [pass, setPass] = useState(false);
+
+  const startGameHandler = () => {
+    setStartGame(true);
+    setGameOver(false);
+  };
+
+  const gameOverHandler = (checkPass) => {
+    if (checkPass === "fail") {
+      setPass(false);
+
+      if (heart > 0) {
+        minusHeart();
+      }
+    } else {
+      setPass(true);
+    }
+
+    setGameOver(true);
+  };
+
+  const goHomeHandler = () => {
+    setStartGame(false);
+    setGameOver(false);
+  };
 
   const backAction = () => {
     navigation.navigate(HOME);
@@ -55,29 +69,29 @@ export default ({ navigation }) => {
   return (
     <ImageBackground
       style={styles.screen}
-      source={require("../../../assets/images/background.png")}
+      source={require("../../../assets/images/bonus_background.png")}
     >
       <StatusBar hidden={true} />
       <Header title={""} />
 
       <View style={styles.body}>
-        <View style={styles.heartBox}>
-          <Heart onPress={() => null} numOfHeart={heart} disabled={true} />
-        </View>
-
-        <Content onPress={() => null} bonusStage={"3 x 3"} />
-        <Content onPress={() => null} bonusStage={"4 x 4"} />
-        <Content onPress={() => null} bonusStage={"5 x 5"} />
-        <Content onPress={() => null} bonusStage={"6 x 6"} />
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <Button
-          onPress={() => navigation.navigate(HOME)}
-          content={"home"}
-          size={vw(20)}
-          activeOpacity={0.9}
-        />
+        {startGame ? (
+          gameOver ? null : (
+            <GameScreen onGoHome={goHomeHandler} onGameOver={gameOverHandler} />
+          )
+        ) : (
+          <StartGameScreen
+            onStartGame={startGameHandler}
+            navigation={navigation}
+          />
+        )}
+        {/* {
+            <GameOverScreen
+              onGoHome={goHomeHandler}
+              onStartGame={startGameHandler}
+              pass={pass}
+              getHeart={getHeart}
+            />} */}
       </View>
 
       <View style={styles.ads}>
@@ -102,42 +116,10 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 11,
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  buttonContainer: {
-    flex: 1,
-    width: "100%",
-    justifyContent: "flex-end",
-    alignItems: "flex-end",
-    paddingRight: vw(10),
   },
   ads: {
     flex: 1.2,
     justifyContent: "center",
     alignItems: "center",
-  },
-  heartBox: {
-    width: "100%",
-    justifyContent: "flex-end",
-    alignItems: "flex-end",
-    marginRight: vw(3),
-    marginBottom: vh(5),
-  },
-  cardContainer: {
-    width: "60%",
-    height: vh(10),
-    marginBottom: vh(5),
-  },
-  card: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  bonusText: {
-    fontSize: vw(8),
-    fontWeight: "500",
-    color: colors.blackColor,
   },
 });

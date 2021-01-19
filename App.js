@@ -5,7 +5,6 @@ import AsyncStorage from "@react-native-community/async-storage";
 
 import { SoundProvider } from "./src/context/SoundContext";
 import { GameProvider } from "./src/context/GameContext";
-import { BonusProvider } from "./src/context/BonusContext";
 
 import AppStack from "./src/stacks/AppStack";
 
@@ -110,9 +109,7 @@ export default () => {
   return loaded ? (
     <SoundProvider sound={sound}>
       <GameProvider gameInfo={gameInfo}>
-        <BonusProvider>
-          <AppStack />
-        </BonusProvider>
+        <AppStack />
       </GameProvider>
     </SoundProvider>
   ) : (

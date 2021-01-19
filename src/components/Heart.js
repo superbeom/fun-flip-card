@@ -6,7 +6,7 @@ import colors from "../constants/colors";
 
 import { HEART } from "../utils/FontAwesomeSource";
 
-const Heart = ({ onPress, numOfHeart, disabled }) => {
+const Heart = ({ onPress, numOfHeart, disabled, color }) => {
   return (
     <View style={styles.button}>
       <TouchableOpacity
@@ -17,8 +17,12 @@ const Heart = ({ onPress, numOfHeart, disabled }) => {
       >
         {HEART}
       </TouchableOpacity>
-      <Text style={styles.mulText}>X </Text>
-      <Text style={styles.numText}>{numOfHeart}</Text>
+      <Text style={[styles.mulText, { color: color || colors.accentColor }]}>
+        X{" "}
+      </Text>
+      <Text style={[styles.numText, { color: color || colors.accentColor }]}>
+        {numOfHeart}
+      </Text>
     </View>
   );
 };
@@ -38,12 +42,12 @@ const styles = StyleSheet.create({
   mulText: {
     fontSize: vw(5),
     fontWeight: "bold",
-    color: colors.accentColor,
+    // color: colors.accentColor,
   },
   numText: {
     fontSize: vw(7),
     fontWeight: "bold",
-    color: colors.accentColor,
+    // color: colors.accentColor,
   },
 });
 
