@@ -21,10 +21,10 @@
         "ITSAppUsesNonExemptEncryption": false,
         "NSAllowsArbitraryLoads": true,
         "NSAllowsArbitraryLoadsForMedia": true,
-        "NSAllowsArbitraryLoadsInWebContent": true,
-        "config": {
-          "googleMobileAdsAppId": "ca-app-pub-8452350078553076~8582636797"
-        }
+        "NSAllowsArbitraryLoadsInWebContent": true
+      },
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-8452350078553076~8582636797"
       }
     },
     "android": {
