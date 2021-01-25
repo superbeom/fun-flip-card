@@ -2,7 +2,7 @@
   "expo": {
     "name": "FunFlipCard",
     "slug": "flip-card",
-    "version": "1.0.9",
+    "version": "1.0.10",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -16,7 +16,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.heungdo.flipcard",
-      "buildNumber": "1.0.9",
+      "buildNumber": "1.0.10",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "NSAllowsArbitraryLoads": true,
@@ -24,7 +24,7 @@
         "NSAllowsArbitraryLoadsInWebContent": true
       },
       "config": {
-        "googleMobileAdsAppId": "ca-app-pub-8452350078553076~8582636797"
+        "googleMobileAdsAppId": "ca-app-pub-8452350078553076~7594977856"
       }
     },
     "android": {
