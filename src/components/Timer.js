@@ -109,9 +109,10 @@ const Timer = ({
   numOfHeart,
   showAnswerForHint,
   showAnswer,
-  stage,
-  clickedBomb,
-  bonus,
+  stage = null,
+  clickedBomb = false,
+  bonus = false,
+  bonusCheckLimitTime = null,
 }) => {
   const [index, setIndex] = useState(0);
   const [limitTime, setLimitTime] = useState(10);
@@ -123,7 +124,12 @@ const Timer = ({
   };
 
   useEffect(() => {
-    setLimitTime(checkLimitTime(stage));
+    if (bonus && bonusCheckLimitTime) {
+      setLimitTime(bonusCheckLimitTime);
+    } else {
+      setLimitTime(checkLimitTime(stage));
+    }
+
     initializationCount();
   }, []);
 

@@ -4,20 +4,24 @@ import { vw, vh } from "react-native-expo-viewport-units";
 
 import { useGameInfo, useMinusHeart } from "../../context/GameContext";
 
-import { checkTime } from "../../utils/checkSomething";
 import colors from "../../constants/colors";
 import { CHECK_GO_HOME, CANCEL, GO_HOME } from "../../constants/strings";
 
-import GameFeed from "../../components/GameFeed";
+import GameFeed from "./GameFeed";
 import Button from "../../components/Button";
 import Heart from "../../components/Heart";
 import Timer from "../../components/Timer";
 
-export default ({ onGoHome, onGameOver }) => {
-  const { stage, heart } = useGameInfo();
+export default ({
+  onGoHome,
+  onGameOver,
+  horizontalNum,
+  bonusCheckTime,
+  bonusCheckLimitTime,
+}) => {
+  const { heart } = useGameInfo();
   const minusHeart = useMinusHeart();
   const [showAnswer, setShowAnswer] = useState(true);
-  const [clickedBomb, setClickedBomb] = useState(false);
 
   const checkGoHome = () => {
     Alert.alert(
@@ -37,10 +41,9 @@ export default ({ onGoHome, onGameOver }) => {
   const showAnswerForHint = () => {
     setShowAnswer(true);
 
-    // const timeForShowAnswer = checkTime(stage) * 0.6;
+    const timeForShowAnswer = bonusCheckTime * 0.6;
 
-    // setTimeout(() => setShowAnswer(false), timeForShowAnswer);
-    setTimeout(() => setShowAnswer(false), 2000);
+    setTimeout(() => setShowAnswer(false), timeForShowAnswer);
 
     if (heart > 0) {
       minusHeart();
@@ -69,10 +72,8 @@ export default ({ onGoHome, onGameOver }) => {
               numOfHeart={heart}
               showAnswerForHint={showAnswerForHint}
               showAnswer={showAnswer}
-              //   stage={stage}
-              stage={10}
-              clickedBomb={clickedBomb}
               bonus={true}
+              bonusCheckLimitTime={bonusCheckLimitTime}
             />
           </View>
           <View style={styles.heartContainer}>
@@ -88,8 +89,8 @@ export default ({ onGoHome, onGameOver }) => {
           onGameOver={onGameOver}
           showAnswer={showAnswer}
           setShowAnswer={setShowAnswer}
-          clickedBomb={clickedBomb}
-          setClickedBomb={setClickedBomb}
+          horizontalNum={horizontalNum}
+          bonusCheckTime={bonusCheckTime}
         />
       </View>
 

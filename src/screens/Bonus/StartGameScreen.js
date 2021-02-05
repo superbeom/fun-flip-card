@@ -46,10 +46,10 @@ export default ({ onStartGame, navigation }) => {
           />
         </View>
 
-        <Content onPress={onStartGame} bonusStage={"3 x 3"} />
-        <Content onPress={() => null} bonusStage={"4 x 4"} />
-        <Content onPress={() => null} bonusStage={"5 x 5"} />
-        <Content onPress={() => null} bonusStage={"6 x 6"} />
+        <Content onPress={onStartGame.bind(this, "3x3")} bonusStage={"3 x 3"} />
+        <Content onPress={onStartGame.bind(this, "4x4")} bonusStage={"4 x 4"} />
+        <Content onPress={onStartGame.bind(this, "5x5")} bonusStage={"5 x 5"} />
+        <Content onPress={onStartGame.bind(this, "6x6")} bonusStage={"6 x 6"} />
       </View>
 
       <View style={styles.buttonContainer}>

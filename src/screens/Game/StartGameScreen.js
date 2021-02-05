@@ -1,16 +1,11 @@
 import React from "react";
-import { StyleSheet, Text, View, Alert } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { vw, vh } from "react-native-expo-viewport-units";
 
 import { useGameInfo } from "../../context/GameContext";
 import colors from "../../constants/colors";
 import { FLAG } from "../../utils/FontAwesomeSource";
-import {
-  CURRENT_STAGE,
-  BONUS,
-  COMING_SOON,
-  CANCEL,
-} from "../../constants/strings";
+import { CURRENT_STAGE, BONUS } from "../../constants/strings";
 
 import AnimalScreen from "./AnimalScreen";
 
@@ -23,17 +18,6 @@ import Button from "../../components/Button";
 
 export default ({ onStartGame, getHeart, navigation }) => {
   const { stage, heart, gameEnd } = useGameInfo();
-
-  const clickedBonusButton = () => {
-    Alert.alert(
-      COMING_SOON,
-      "",
-      [{ text: CANCEL, onPress: () => null, style: "cancel" }],
-      { cancelable: true }
-    );
-
-    return true;
-  };
 
   return (
     <View style={styles.screen}>
@@ -75,7 +59,7 @@ export default ({ onStartGame, getHeart, navigation }) => {
 
       <View style={styles.buttonContainer}>
         <Button
-          onPress={clickedBonusButton}
+          onPress={() => navigation.navigate(BONUS)}
           content={"game_pad"}
           size={vw(20)}
           activeOpacity={0.9}

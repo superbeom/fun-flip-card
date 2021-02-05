@@ -28,8 +28,41 @@ export default ({ navigation }) => {
   const [startGame, setStartGame] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [pass, setPass] = useState(false);
+  const [horizontalNum, setHorizontalNum] = useState(3);
 
-  const startGameHandler = () => {
+  /* horizontalNum에 따른, 처음에 정답을 보여 주는 시간 */
+  const [bonusCheckTime, setBonusCheckTime] = useState(3000);
+
+  /* horizontalNum에 따른, 제한 시간 */
+  const [bonusCheckLimitTime, setBonusCheckLimitTime] = useState(50);
+
+  const startGameHandler = (horizontalNum) => {
+    switch (true) {
+      case horizontalNum === "3x3":
+        setHorizontalNum((curHorizontalNum) => 3);
+        setBonusCheckTime((curCheckTime) => 2500);
+        setBonusCheckLimitTime((curCheckLimitTime) => 15);
+        break;
+
+      case horizontalNum === "4x4":
+        setHorizontalNum((curHorizontalNum) => 4);
+        setBonusCheckTime((curCheckTime) => 4500);
+        setBonusCheckLimitTime((curCheckLimitTime) => 20);
+        break;
+
+      case horizontalNum === "5x5":
+        setHorizontalNum((curHorizontalNum) => 5);
+        setBonusCheckTime((curCheckTime) => 6000);
+        setBonusCheckLimitTime((curCheckLimitTime) => 35);
+        break;
+
+      case horizontalNum === "6x6":
+        setHorizontalNum((curHorizontalNum) => 6);
+        setBonusCheckTime((curCheckTime) => 8000);
+        setBonusCheckLimitTime((curCheckLimitTime) => 60);
+        break;
+    }
+
     setStartGame(true);
     setGameOver(false);
   };
@@ -77,7 +110,13 @@ export default ({ navigation }) => {
       <View style={styles.body}>
         {startGame ? (
           gameOver ? null : (
-            <GameScreen onGoHome={goHomeHandler} onGameOver={gameOverHandler} />
+            <GameScreen
+              onGoHome={goHomeHandler}
+              onGameOver={gameOverHandler}
+              horizontalNum={horizontalNum}
+              bonusCheckTime={bonusCheckTime}
+              bonusCheckLimitTime={bonusCheckLimitTime}
+            />
           )
         ) : (
           <StartGameScreen
