@@ -246,6 +246,7 @@ export default ({
             >
               <TouchableOpacity
                 onPress={checkClick.bind(this, itemName, index)}
+                activeOpacity={0.5}
                 disabled={
                   index === firstClickIndex ||
                   index === secondClickIndex ||
