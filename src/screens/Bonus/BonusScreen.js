@@ -4,6 +4,7 @@ import {
   View,
   StatusBar,
   BackHandler,
+  Modal,
   Platform,
   ImageBackground,
 } from "react-native";
@@ -12,6 +13,7 @@ import { AdMobBanner } from "expo-ads-admob";
 import admob from "../../config/admob";
 
 import { useGameInfo, useMinusHeart } from "../../context/GameContext";
+import { usePlaySound, useStopSound } from "../../context/SoundContext";
 
 import { HOME } from "../../constants/strings";
 
@@ -25,9 +27,13 @@ import Header from "../../components/Header";
 export default ({ navigation }) => {
   const { heart } = useGameInfo();
   const minusHeart = useMinusHeart();
+  const playSound = usePlaySound();
+  const stopSound = useStopSound();
   const [startGame, setStartGame] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [pass, setPass] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [checkReward, setCheckReward] = useState(false);
   const [horizontalNum, setHorizontalNum] = useState(3);
 
   /* horizontalNum에 따른, 처음에 정답을 보여 주는 시간 */
@@ -36,7 +42,11 @@ export default ({ navigation }) => {
   /* horizontalNum에 따른, 제한 시간 */
   const [bonusCheckLimitTime, setBonusCheckLimitTime] = useState(50);
 
-  const startGameHandler = (horizontalNum) => {
+  const paidStartGameHandler = (horizontalNum) => {
+    if (heart > 0) {
+      minusHeart();
+    }
+
     switch (true) {
       case horizontalNum === "3x3":
         setHorizontalNum((curHorizontalNum) => 3);
@@ -63,6 +73,10 @@ export default ({ navigation }) => {
         break;
     }
 
+    startGameHandler();
+  };
+
+  const startGameHandler = () => {
     setStartGame(true);
     setGameOver(false);
   };
@@ -84,6 +98,19 @@ export default ({ navigation }) => {
   const goHomeHandler = () => {
     setStartGame(false);
     setGameOver(false);
+  };
+
+  /* 하트 버튼 누름 → 동영상 광고 시청 → 하트 얻음 */
+  const getHeart = () => {
+    setModalVisible((curState) => !curState);
+    stopSound();
+
+    return null;
+  };
+
+  const closeModal = () => {
+    setModalVisible((curState) => !curState);
+    playSound();
   };
 
   const backAction = () => {
@@ -109,7 +136,14 @@ export default ({ navigation }) => {
 
       <View style={styles.body}>
         {startGame ? (
-          gameOver ? null : (
+          gameOver ? (
+            <GameOverScreen
+              onGoHome={goHomeHandler}
+              onStartGame={startGameHandler}
+              pass={pass}
+              getHeart={getHeart}
+            />
+          ) : (
             <GameScreen
               onGoHome={goHomeHandler}
               onGameOver={gameOverHandler}
@@ -120,17 +154,12 @@ export default ({ navigation }) => {
           )
         ) : (
           <StartGameScreen
-            onStartGame={startGameHandler}
+            // onStartGame={startGameHandler}
+            onStartGame={paidStartGameHandler}
+            getHeart={getHeart}
             navigation={navigation}
           />
         )}
-        {/* {
-            <GameOverScreen
-              onGoHome={goHomeHandler}
-              onStartGame={startGameHandler}
-              pass={pass}
-              getHeart={getHeart}
-            />} */}
       </View>
 
       <View style={styles.ads}>
@@ -145,6 +174,19 @@ export default ({ navigation }) => {
           onDidFailToReceiveAdWithError={this.bannerError}
         />
       </View>
+
+      <Modal
+        animationType="slide"
+        visible={modalVisible}
+        onRequestClose={() => null}
+      >
+        <GetHeartScreen
+          closeModal={closeModal}
+          numOfHeart={heart}
+          checkReward={checkReward}
+          setCheckReward={setCheckReward}
+        />
+      </Modal>
     </ImageBackground>
   );
 };

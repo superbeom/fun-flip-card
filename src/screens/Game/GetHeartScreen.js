@@ -17,6 +17,7 @@ import Heart from "../../components/Heart";
 import Button from "../../components/Button";
 import GetHeart from "../../components/GetHeart";
 import Loader from "../../components/Loader";
+import Overlay from "../../components/Overlay";
 
 let count = 0;
 let reward = false;
@@ -46,14 +47,7 @@ const Content = ({ onPress, num, price, update }) => (
       </View>
     </Card>
     {/* Overlay */}
-    {update ? (
-      <>
-        <View style={styles.overlay} />
-        <View style={styles.overlayTextContainer}>
-          <Text style={styles.overlayText}>{COMING_SOON}</Text>
-        </View>
-      </>
-    ) : null}
+    {update ? <Overlay string={COMING_SOON} /> : null}
   </TouchableOpacity>
 );
 
@@ -187,34 +181,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   priceBox: {},
-  overlay: {
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    opacity: 0.8,
-    padding: 20,
-    borderRadius: 10,
-    backgroundColor: colors.slateGrayColor,
-    elevation: 6,
-  },
-  overlayTextContainer: {
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
-    elevation: 6,
-  },
-  overlayText: {
-    fontSize: vw(8.5),
-    fontWeight: "700",
-    color: colors.whiteColor,
-  },
   mulText: {
     fontSize: vw(5),
     fontWeight: "500",
