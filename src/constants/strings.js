@@ -101,6 +101,8 @@ export const PLAY_AGAIN = "PLAY\nAGAIN";
 
 export const NEXT_STAGE = "NEXT\nSTAGE";
 
+export const NEW_GAME = "NEW\nGAME";
+
 /*
 
     Korean Strings...
