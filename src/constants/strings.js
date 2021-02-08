@@ -32,6 +32,8 @@ export const CURRENT_STAGE = "STAGE";
 
 export const GAME_START = "GAME\nSTART";
 
+export const NEED_A_HEART = "NEED A HEART";
+
 /*
 
     English Strings...
