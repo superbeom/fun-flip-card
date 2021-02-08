@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
   heart: {
     shadowColor: colors.redColor,
-    shadowOffset: { width: 7, height: 7 },
+    shadowOffset: { width: 3, height: 3 },
     shadowOpacity: 0.6,
     shadowRadius: 4,
     elevation: 7,
@@ -42,12 +42,10 @@ const styles = StyleSheet.create({
   mulText: {
     fontSize: vw(5),
     fontWeight: "bold",
-    // color: colors.accentColor,
   },
   numText: {
     fontSize: vw(7),
     fontWeight: "bold",
-    // color: colors.accentColor,
   },
 });
 
