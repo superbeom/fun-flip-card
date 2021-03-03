@@ -36,14 +36,18 @@ const Content = ({ onPress, num, price, update }) => (
         <Text style={styles.numText}>{num}</Text>
       </View>
       <View style={styles.priceBox}>
-        <CurrencyFormat
-          renderText={(value) => <Text style={styles.price}>{value}</Text>}
-          decimalScale={2}
-          value={price}
-          displayType={"text"}
-          thousandSeparator={true}
-          prefix={"$"}
-        />
+        {update ? (
+          <CurrencyFormat
+            renderText={(value) => <Text style={styles.price}>{value}</Text>}
+            decimalScale={2}
+            value={price}
+            displayType={"text"}
+            thousandSeparator={true}
+            prefix={"$"}
+          />
+        ) : (
+          <Text style={[styles.price, { fontSize: vw(5) }]}>Watch Ads</Text>
+        )}
       </View>
     </Card>
     {/* Overlay */}
