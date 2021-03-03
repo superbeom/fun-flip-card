@@ -46,7 +46,10 @@ const Content = ({ onPress, num, price, update }) => (
             prefix={"$"}
           />
         ) : (
-          <Text style={[styles.price, { fontSize: vw(5) }]}>Watch Ads</Text>
+          <>
+            <Text style={[styles.price, { fontSize: vw(5) }]}>Watch Ads</Text>
+            <Text style={[styles.price, { fontSize: vw(5) }]}>for heart!</Text>
+          </>
         )}
       </View>
     </Card>
