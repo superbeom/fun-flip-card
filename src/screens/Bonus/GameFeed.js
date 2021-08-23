@@ -9,15 +9,10 @@ import {
 } from "react-native";
 import { Audio } from "expo-av";
 
-import { useGameInfo } from "../context/GameContext";
-import colors from "../constants/colors";
-import checkStage from "../utils/checkStage";
-import checkStageTwo from "../utils/checkStageTwo";
-import checkStageThree from "../utils/checkStageThree";
-import { shuffle } from "../utils/shuffleArray";
-import { checkAnswer, checkTime } from "../utils/checkSomething";
-import { getSkullForHint } from "../utils/FontAwesomeSource";
-import { QUESTION_MARK } from "../constants/strings";
+import colors from "../../constants/colors";
+import checkBonusStage from "../../utils/checkBonusStage";
+import { shuffle } from "../../utils/shuffleArray";
+import { QUESTION_MARK } from "../../constants/strings";
 
 let clickNum = 0;
 let firstPick = null;
@@ -29,16 +24,16 @@ export default ({
   onGameOver,
   showAnswer,
   setShowAnswer,
-  clickedBomb,
-  setClickedBomb,
+  horizontalNum,
+  bonusCheckTime,
 }) => {
-  const { stage, horizontalNum } = useGameInfo();
   const [shuffleData, setShuffleData] = useState([]);
   const [firstClickIndex, setFirstClickIndex] = useState(-1);
   const [secondClickIndex, setSecondClickIndex] = useState(-1);
   const [bombSound, setBombSound] = useState();
   const [correctSound, setCorrectSound] = useState();
   const [inCorrectSound, setInCorrectSound] = useState();
+  const [numOfAnswer, setNumOfAnswer] = useState();
 
   const windowWidth = Dimensions.get("window").width;
   const fitWidth = windowWidth / (horizontalNum * 1.1);
@@ -76,7 +71,7 @@ export default ({
 
       /* 정답을 모두 찾았는지 체크 */
       const nowNumOfCorrect = correctItemArray.length;
-      if (nowNumOfCorrect === checkAnswer(stage)) {
+      if (nowNumOfCorrect === numOfAnswer) {
         /* 정답을 모두 찾았다면, Game Over */
         return onGameOver();
       }
@@ -91,14 +86,7 @@ export default ({
     initialization();
   };
 
-  const checkClick = async (item, index) => {
-    /* 해골 클릭 시, Game Over */
-    if (item === "skull") {
-      setClickedBomb(true);
-      await bombSound.playAsync();
-      setTimeout(onGameOver.bind(this, "fail"), 500);
-    }
-
+  const checkClick = (item, index) => {
     if (clickNum === 0) {
       clickNum++;
       setFirstClickIndex(index);
@@ -114,48 +102,41 @@ export default ({
       setTimeout(() => compareCards("bomb"), 150);
     }
 
-    if (clickNum === 2 && item !== "bomb" && item !== "skull") {
+    if (clickNum === 2 && item !== "bomb") {
       setTimeout(() => compareCards(), 150);
     }
   };
 
   const preLoad = async () => {
     try {
-      let stageName;
+      const { stageArray, answer: answerNum } = checkBonusStage(horizontalNum);
 
-      if (stage <= 300) {
-        stageName = checkStage(stage);
-      } else if (stage > 300 && stage <= 600) {
-        stageName = checkStageTwo(stage);
-      } else if (stage > 600) {
-        stageName = checkStageThree(stage);
-      }
-
-      setShuffleData(shuffle(stageName));
+      setShuffleData(shuffle(stageArray));
+      setNumOfAnswer(answerNum);
 
       /* Stage별 정해진 시간 동안, 처음에 정답 보여 주기 */
       setTimeout(() => {
         setShowAnswer(false);
         initialCount++;
-      }, checkTime(stage));
+      }, bonusCheckTime);
 
       initializationFeed();
 
       /* Set Sound */
       const { sound: bombSound } = await Audio.Sound.createAsync(
-        require("../../assets/sounds/bomb_sound.mp3")
+        require("../../../assets/sounds/bomb_sound.mp3")
       );
       const { sound: correctSound } = await Audio.Sound.createAsync(
-        require("../../assets/sounds/correct_sound.mp3")
+        require("../../../assets/sounds/correct_sound.mp3")
       );
       const { sound: inCorrectSound } = await Audio.Sound.createAsync(
-        require("../../assets/sounds/incorrect_sound.mp3")
+        require("../../../assets/sounds/incorrect_sound.mp3")
       );
       setBombSound(bombSound);
       setCorrectSound(correctSound);
       setInCorrectSound(inCorrectSound);
     } catch (error) {
-      console.log("error @preLoad_GameFeed: ", error.message);
+      console.log("error @preLoad_GameFeed_Bonus: ", error.message);
     }
   };
 
@@ -182,8 +163,7 @@ export default ({
         {
           width: fitWidth,
           height: fitWidth,
-          backgroundColor:
-            item.key === "skull" ? colors.redColor : colors.lightWhiteColor,
+          backgroundColor: colors.lightWhiteColor,
         },
       ]}
     >
@@ -203,7 +183,7 @@ export default ({
           },
         ]}
       >
-        {item.key === "skull" ? getSkullForHint(horizontalNum) : item}
+        {item}
       </View>
       <View
         style={[
@@ -271,7 +251,6 @@ export default ({
                   index === firstClickIndex ||
                   index === secondClickIndex ||
                   correctItemArray.includes(itemName) ||
-                  clickedBomb ||
                   showAnswer
                 }
               >
@@ -280,8 +259,7 @@ export default ({
                     secondClickIndex === index ||
                     correctItemArray.includes(itemName)
                     ? selectedAnswer(item)
-                    : initialCount !== 0 &&
-                      (itemName === "bomb" || itemName === "skull")
+                    : initialCount !== 0 && itemName === "bomb"
                     ? selectedAnswer(item)
                     : firstPick !== null && itemName === firstPick
                     ? sameAnswer(item)

@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
   StatusBar,
-  Alert,
   BackHandler,
   Modal,
   Platform,
@@ -16,23 +15,17 @@ import admob from "../../config/admob";
 import { useGameInfo, useMinusHeart } from "../../context/GameContext";
 import { usePlaySound, useStopSound } from "../../context/SoundContext";
 
-import {
-  CONGRATULATIONS,
-  HOLD_ON,
-  CHECK_EXIT,
-  CANCEL,
-  EXIT,
-} from "../../constants/strings";
+import { HOME } from "../../constants/strings";
 
-import StartGameScreen from "../Game/StartGameScreen";
-import GameScreen from "../Game/GameScreen";
-import GameOverScreen from "../Game/GameOverScreen";
+import StartGameScreen from "./StartGameScreen";
+import GameScreen from "./GameScreen";
+import GameOverScreen from "./GameOverScreen";
 import GetHeartScreen from "../Game/GetHeartScreen";
 
 import Header from "../../components/Header";
 
 export default ({ navigation }) => {
-  const { stage, heart } = useGameInfo();
+  const { heart } = useGameInfo();
   const minusHeart = useMinusHeart();
   const playSound = usePlaySound();
   const stopSound = useStopSound();
@@ -41,20 +34,54 @@ export default ({ navigation }) => {
   const [pass, setPass] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [checkReward, setCheckReward] = useState(false);
+  const [horizontalNum, setHorizontalNum] = useState(3);
 
-  const playAgainHandler = () => {
-    playSound();
-    setGameOver(false);
+  /* horizontalNum에 따른, 처음에 정답을 보여 주는 시간 */
+  const [bonusCheckTime, setBonusCheckTime] = useState(3000);
+
+  /* horizontalNum에 따른, 제한 시간 */
+  const [bonusCheckLimitTime, setBonusCheckLimitTime] = useState(50);
+
+  const paidStartGameHandler = (horizontalNum) => {
+    if (heart > 0) {
+      minusHeart();
+    }
+
+    switch (true) {
+      case horizontalNum === "3x3":
+        setHorizontalNum((curHorizontalNum) => 3);
+        setBonusCheckTime((curCheckTime) => 2500);
+        setBonusCheckLimitTime((curCheckLimitTime) => 15);
+        break;
+
+      case horizontalNum === "4x4":
+        setHorizontalNum((curHorizontalNum) => 4);
+        setBonusCheckTime((curCheckTime) => 4500);
+        setBonusCheckLimitTime((curCheckLimitTime) => 20);
+        break;
+
+      case horizontalNum === "5x5":
+        setHorizontalNum((curHorizontalNum) => 5);
+        setBonusCheckTime((curCheckTime) => 6000);
+        setBonusCheckLimitTime((curCheckLimitTime) => 35);
+        break;
+
+      case horizontalNum === "6x6":
+        setHorizontalNum((curHorizontalNum) => 6);
+        setBonusCheckTime((curCheckTime) => 8000);
+        setBonusCheckLimitTime((curCheckLimitTime) => 60);
+        break;
+    }
+
+    startGameHandler();
   };
 
   const startGameHandler = () => {
     setStartGame(true);
-    playAgainHandler();
+    setGameOver(false);
   };
 
   const gameOverHandler = (checkPass) => {
-    stopSound();
-
     if (checkPass === "fail") {
       setPass(false);
 
@@ -69,7 +96,6 @@ export default ({ navigation }) => {
   };
 
   const goHomeHandler = () => {
-    playSound();
     setStartGame(false);
     setGameOver(false);
   };
@@ -88,14 +114,7 @@ export default ({ navigation }) => {
   };
 
   const backAction = () => {
-    Alert.alert(HOLD_ON, CHECK_EXIT, [
-      {
-        text: CANCEL,
-        onPress: () => null,
-        style: "cancel",
-      },
-      { text: EXIT, onPress: () => BackHandler.exitApp() },
-    ]);
+    navigation.navigate(HOME);
 
     return true;
   };
@@ -110,38 +129,33 @@ export default ({ navigation }) => {
   return (
     <ImageBackground
       style={styles.screen}
-      source={require("../../../assets/images/background.png")}
+      source={require("../../../assets/images/bonus_background.png")}
     >
       <StatusBar hidden={true} />
-      <Header
-        title={
-          startGame
-            ? stage === 885
-              ? gameOver
-                ? CONGRATULATIONS
-                : `STAGE ${stage}`
-              : `STAGE ${stage}`
-            : null
-        }
-        gaming={startGame}
-      />
+      <Header title={""} />
 
       <View style={styles.body}>
         {startGame ? (
           gameOver ? (
             <GameOverScreen
               onGoHome={goHomeHandler}
-              onPlayAgain={playAgainHandler}
               onStartGame={startGameHandler}
               pass={pass}
               getHeart={getHeart}
             />
           ) : (
-            <GameScreen onGoHome={goHomeHandler} onGameOver={gameOverHandler} />
+            <GameScreen
+              onGoHome={goHomeHandler}
+              onGameOver={gameOverHandler}
+              horizontalNum={horizontalNum}
+              bonusCheckTime={bonusCheckTime}
+              bonusCheckLimitTime={bonusCheckLimitTime}
+            />
           )
         ) : (
           <StartGameScreen
-            onStartGame={startGameHandler}
+            // onStartGame={startGameHandler}
+            onStartGame={paidStartGameHandler}
             getHeart={getHeart}
             navigation={navigation}
           />

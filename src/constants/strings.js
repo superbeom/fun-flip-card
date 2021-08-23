@@ -18,7 +18,7 @@ export const BLANK = "Blank";
 
 export const HOME = "Home";
 
-export const RANK = "Rank";
+export const BONUS = "Bonus";
 
 export const CONGRATULATIONS = "CONGRATULATIONS!!";
 
@@ -31,6 +31,8 @@ export const QUESTION_MARK = "?";
 export const CURRENT_STAGE = "STAGE";
 
 export const GAME_START = "GAME\nSTART";
+
+export const NEED_A_HEART = "NEED A HEART";
 
 /*
 
@@ -100,6 +102,8 @@ export const CHECK_GO_HOME = "Seriously go home?";
 export const PLAY_AGAIN = "PLAY\nAGAIN";
 
 export const NEXT_STAGE = "NEXT\nSTAGE";
+
+export const NEW_GAME = "NEW\nGAME";
 
 /*
 

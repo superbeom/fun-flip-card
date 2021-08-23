@@ -6,7 +6,12 @@ import { useMinusHeart } from "../context/GameContext";
 
 import colors from "../constants/colors";
 import { checkLimitTime } from "../utils/checkSomething";
-import { STOP_WATCH, BAN } from "../utils/FontAwesomeSource";
+import {
+  STOP_WATCH,
+  BAN,
+  BONUS_STOP_WATCH,
+  BONUS_BAN,
+} from "../utils/FontAwesomeSource";
 
 import Hint from "../components/Hint";
 
@@ -22,6 +27,7 @@ const Progress = ({
   showAnswer,
   clickedBomb,
   disableHint,
+  bonus,
 }) => {
   const minusHeart = useMinusHeart();
   const [width, setWidth] = useState(0);
@@ -59,11 +65,18 @@ const Progress = ({
           onPress={addTime}
           disabled={numOfHeart < 2 || clickedBomb}
         >
-          {numOfHeart < 2 || clickedBomb ? BAN : STOP_WATCH}
+          {bonus
+            ? numOfHeart < 2 || clickedBomb
+              ? BONUS_BAN
+              : BONUS_STOP_WATCH
+            : numOfHeart < 2 || clickedBomb
+            ? BAN
+            : STOP_WATCH}
         </TouchableOpacity>
         <Hint
           onPress={showAnswerForHint}
           disabled={numOfHeart < 2 || showAnswer || clickedBomb || disableHint}
+          bonus={bonus}
         />
       </View>
       <View
@@ -96,8 +109,10 @@ const Timer = ({
   numOfHeart,
   showAnswerForHint,
   showAnswer,
-  stage,
-  clickedBomb,
+  stage = null,
+  clickedBomb = false,
+  bonus = false,
+  bonusCheckLimitTime = null,
 }) => {
   const [index, setIndex] = useState(0);
   const [limitTime, setLimitTime] = useState(10);
@@ -109,7 +124,12 @@ const Timer = ({
   };
 
   useEffect(() => {
-    setLimitTime(checkLimitTime(stage));
+    if (bonus && bonusCheckLimitTime) {
+      setLimitTime(bonusCheckLimitTime);
+    } else {
+      setLimitTime(checkLimitTime(stage));
+    }
+
     initializationCount();
   }, []);
 
@@ -148,6 +168,7 @@ const Timer = ({
         showAnswer={showAnswer}
         clickedBomb={clickedBomb}
         disableHint={disableHint}
+        bonus={bonus}
       />
     </View>
   );

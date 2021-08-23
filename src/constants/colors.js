@@ -12,6 +12,7 @@ export default {
   redColor: "#ff0000",
   timerBarColor: "rgba(255, 255, 255, 0.7)",
   getHeartBgColor: "rgba(112, 186, 115, 0.4)",
+
   /*
     Stage Colors
   */
